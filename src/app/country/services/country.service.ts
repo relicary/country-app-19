@@ -23,7 +23,7 @@ export class CountryService {
           return CountryMapper.mapRestCountryArrToCountryArr(restCountries);
         }),
         catchError( error => {
-          return throwError(() =>  new Error(`No countries recovered which capital contains ${query}`))
+          return throwError(() =>  new Error(`No countries recovered which capital contains: ${query}`))
         }),
       );
 
