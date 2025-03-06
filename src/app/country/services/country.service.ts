@@ -29,4 +29,18 @@ export class CountryService {
 
   }
 
+  searchByCountry( query: string): Observable<Country[]> {
+    query = query.toLocaleLowerCase();
+
+    return this.http.get<RESTCountry[]>(`${ API_URL }/name/${ query }`)
+      .pipe(
+        map(restCountries => {
+          return CountryMapper.mapRestCountryArrToCountryArr(restCountries);
+        }),
+        catchError(error => {
+          return throwError(() => new Error(`No countries recovered which name contains: ${query}`))
+        })
+      );
+  }
+
 }
