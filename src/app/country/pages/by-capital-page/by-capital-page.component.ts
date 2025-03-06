@@ -34,7 +34,7 @@ export class ByCapitalPageComponent {
         error: (err) => {
           this.isLoading.set(false);
           this.countries.set([]);
-          this.isError.set(`No countries found with ${query}`);
+          this.isError.set(err);
         }
       });
 
