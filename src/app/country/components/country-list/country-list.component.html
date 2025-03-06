@@ -34,7 +34,9 @@
             {{ country.capital }}
           </td>
           <td>
-            {{ country.population }}
+            <span class="badge badge-secondary">
+              {{ country.population | number }}
+            </span>
           </td>
           <td>
             <a class="link-primary cursor-pointer">More...</a>
