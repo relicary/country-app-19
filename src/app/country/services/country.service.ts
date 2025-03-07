@@ -14,6 +14,7 @@ export class CountryService {
 
   private http = inject(HttpClient);
   private queryCacheCapital = new Map<string, Country[]>();
+  private queryCacheCountry = new Map<string, Country[]>();
 
   searchByCapital( query: string ): Observable<Country[]> {
 
@@ -22,7 +23,6 @@ export class CountryService {
     if (this.queryCacheCapital.has(query)) {
       return of(this.queryCacheCapital.get(query) ?? []);
     }
-
 
     return this.http.get<RESTCountry[]>(`${ API_URL }/capital/${ query }`)
       .pipe(
@@ -42,10 +42,17 @@ export class CountryService {
   searchByCountry( query: string): Observable<Country[]> {
     query = query.toLocaleLowerCase();
 
+    if (this.queryCacheCountry.has(query)) {
+      return of(this.queryCacheCountry.get(query) ?? []);
+    }
+
     return this.http.get<RESTCountry[]>(`${ API_URL }/name/${ query }`)
       .pipe(
         map(restCountries => {
           return CountryMapper.mapRestCountryArrToCountryArr(restCountries);
+        }),
+        tap( countries => {
+          this.queryCacheCountry.set(query, countries);
         }),
         catchError(error => {
           return throwError(() => new Error(`No countries recovered which name contains: ${query}`))
