@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Country } from '../../../interfaces/country.interface';
 import { DecimalPipe } from '@angular/common';
 
@@ -11,4 +11,8 @@ import { DecimalPipe } from '@angular/common';
 export class CountryInformationComponent {
 
   country = input.required<Country>();
+
+  currentYear = computed<number>(() => {
+    return new Date().getFullYear();
+  });
 }
